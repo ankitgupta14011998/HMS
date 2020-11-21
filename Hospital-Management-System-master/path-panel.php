@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php 
-include('func1.php');
+include('func5.php');
 $con=mysqli_connect("localhost","root","","myhmsdb");
 $doctor = $_SESSION['dname'];
 if(isset($_GET['cancel']))
@@ -106,8 +106,8 @@ if(isset($_GET['cancel']))
   <div class="col-md-4" style="max-width:18%;margin-top: 3%;">
     <div class="list-group" id="list-tab" role="tablist">
       <a class="list-group-item list-group-item-action active" href="#list-dash" role="tab" aria-controls="home" data-toggle="list">Dashboard</a>
-      <a class="list-group-item list-group-item-action" href="#list-app" id="list-app-list" role="tab" data-toggle="list" aria-controls="home">Appointments</a>
-      <a class="list-group-item list-group-item-action" href="#list-pres" id="list-pres-list" role="tab" data-toggle="list" aria-controls="home"> Prescription List</a>
+      <a class="list-group-item list-group-item-action" href="#list-app" id="list-app-list" role="tab" data-toggle="list" aria-controls="home">Pending Reports</a>
+      <a class="list-group-item list-group-item-action" href="#list-pres" id="list-pres-list" role="tab" data-toggle="list" aria-controls="home"> Past Reports</a>
       
     </div><br>
   </div>
@@ -122,7 +122,7 @@ if(isset($_GET['cancel']))
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body">
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-list fa-stack-1x fa-inverse"></i> </span>
-                      <h4 class="StepTitle" style="margin-top: 5%;"> View Appointments</h4>
+                      <h4 class="StepTitle" style="margin-top: 5%;"> View Pending Test</h4>
                       <script>
                         function clickDiv(id) {
                           document.querySelector(id).click();
@@ -130,7 +130,7 @@ if(isset($_GET['cancel']))
                       </script>                      
                       <p class="links cl-effect-1">
                         <a href="#list-app" onclick="clickDiv('#list-app-list')">
-                          Appointment List
+                          Pending Tests List
                         </a>
                       </p>
                     </div>
@@ -141,11 +141,11 @@ if(isset($_GET['cancel']))
                   <div class="panel panel-white no-radius text-center">
                     <div class="panel-body">
                       <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-list-ul fa-stack-1x fa-inverse"></i> </span>
-                      <h4 class="StepTitle" style="margin-top: 5%;"> Prescriptions</h4>
+                      <h4 class="StepTitle" style="margin-top: 5%;"> Past Reports</h4>
                         
                       <p class="links cl-effect-1">
                         <a href="#list-pres" onclick="clickDiv('#list-pres-list')">
-                          Prescription List
+                          Past Reports List
                         </a>
                       </p>
                     </div>
@@ -169,12 +169,10 @@ if(isset($_GET['cancel']))
                     <th scope="col">Gender</th>
                     <th scope="col">Email</th>
                     <th scope="col">Contact</th>
-                    <th scope="col">Appointment Date</th>
-                    <th scope="col">Appointment Time</th>
+            
                     <th scope="col">Current Status</th>
                     <th scope="col">Action</th>
-                    <th scope="col">Prescribe</th>
-                    <th scope="col">Patient's Report</th>
+                    <th scope="col">Tests</th>
 
                   </tr>
                 </thead>
@@ -183,7 +181,7 @@ if(isset($_GET['cancel']))
                     $con=mysqli_connect("localhost","root","","myhmsdb");
                     global $con;
                     $dname = $_SESSION['dname'];
-                    $query = "select pid,ID,fname,lname,gender,email,contact,appdate,apptime,userStatus,doctorStatus from appointmenttb where doctor='$dname';";
+                    $query = "select pid,ID,fname,lname,gender,email,contact,userStatus,doctorStatus from appointmenttb where doctor='$dname';";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
                       ?>
@@ -195,8 +193,7 @@ if(isset($_GET['cancel']))
                         <td><?php echo $row['gender'];?></td>
                         <td><?php echo $row['email'];?></td>
                         <td><?php echo $row['contact'];?></td>
-                        <td><?php echo $row['appdate'];?></td>
-                        <td><?php echo $row['apptime'];?></td>
+              
                         <td>
                     <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                     {
@@ -220,7 +217,7 @@ if(isset($_GET['cancel']))
 													
 	                        <a href="doctor-panel.php?ID=<?php echo $row['ID']?>&cancel=update" 
                               onClick="return confirm('Are you sure you want to cancel this appointment ?')"
-                              title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Cancel</button></a>
+                              title="Cancel Appointment" tooltip-placement="top" tooltip="Remove"><button class="btn btn-danger">Absent</button></a>
 	                        <?php } else {
 
                                 echo "Cancelled";
@@ -233,29 +230,16 @@ if(isset($_GET['cancel']))
                         <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                         { ?>
 
-                        <a href="prescribe.php?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&fname=<?php echo $row['fname']?>&lname=<?php echo $row['lname']?>&appdate=<?php echo $row['appdate']?>&apptime=<?php echo $row['apptime']?>"
-                        tooltip-placement="top" tooltip="Remove" title="prescribe">
-                        <button class="btn btn-success">Prescibe</button></a>
+                        <a href="test.php?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&fname=<?php echo $row['fname']?>&lname=<?php echo $row['lname']?>"
+                        tooltip-placement="top" tooltip="Remove" title="generate report">
+                        <button class="btn btn-success">Remarks</button></a>
                         <?php } else {
 
                             echo "-";
                             } ?>
                         
                         </td>
-                        <td>
 
-                        <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
-                        { ?>
-
-                        <a href="report.php?pid=<?php echo $row['pid']?>&ID=<?php echo $row['ID']?>&fname=<?php echo $row['fname']?>&lname=<?php echo $row['lname']?>&appdate=<?php echo $row['appdate']?>&apptime=<?php echo $row['apptime']?>"
-                        tooltip-placement="top" tooltip="Remove" title="reports">
-                        <button class="btn btn-success">view report</button></a>
-                        <?php } else {
-
-                            echo "-";
-                            } ?>
-                        
-                        </td>
 
                       </tr></a>
                     <?php } ?>
@@ -276,11 +260,9 @@ if(isset($_GET['cancel']))
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
                     <th scope="col">Appointment ID</th>
-                    <th scope="col">Appointment Date</th>
-                    <th scope="col">Appointment Time</th>
-                    <th scope="col">Disease</th>
-                    <th scope="col">Allergy</th>
-                    <th scope="col">Prescribe</th>
+                    <th scope="col">Covid-19</th>
+                    <th scope="col">Tests</th> 
+                    <th scope="col">Test Results</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -289,7 +271,7 @@ if(isset($_GET['cancel']))
                     $con=mysqli_connect("localhost","root","","myhmsdb");
                     global $con;
 
-                    $query = "select pid,fname,lname,ID,appdate,apptime,disease,allergy,prescription from prestb where doctor='$doctor';";
+                    $query = "select pid,fname,lname,ID,disease,allergy,prescription from testtb where doctor='$doctor';";
                     
                     $result = mysqli_query($con,$query);
                     if(!$result){
@@ -305,8 +287,7 @@ if(isset($_GET['cancel']))
                         <td><?php echo $row['lname'];?></td>
                         <td><?php echo $row['ID'];?></td>
                         
-                        <td><?php echo $row['appdate'];?></td>
-                        <td><?php echo $row['apptime'];?></td>
+                        
                         <td><?php echo $row['disease'];?></td>
                         <td><?php echo $row['allergy'];?></td>
                         <td><?php echo $row['prescription'];?></td>
@@ -332,8 +313,7 @@ if(isset($_GET['cancel']))
                     <th scope="col">Contact</th>
                     <th scope="col">Doctor Name</th>
                     <th scope="col">Consultancy Fees</th>
-                    <th scope="col">Appointment Date</th>
-                    <th scope="col">Appointment Time</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
@@ -358,8 +338,6 @@ if(isset($_GET['cancel']))
                         <td><?php echo $row['contact'];?></td>
                         <td><?php echo $row['doctor'];?></td>
                         <td><?php echo $row['docFees'];?></td>
-                        <td><?php echo $row['appdate'];?></td>
-                        <td><?php echo $row['apptime'];?></td>
                       </tr>
                     <?php } ?>
                 </tbody>

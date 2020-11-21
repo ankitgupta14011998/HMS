@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-include('func1.php');
+include('func5.php');
 $pid='';
 $ID='';
 $appdate='';
@@ -8,13 +8,11 @@ $apptime='';
 $fname = '';
 $lname= '';
 $doctor = $_SESSION['dname'];
-if(isset($_GET['pid']) && isset($_GET['ID']) && ($_GET['appdate']) && isset($_GET['apptime']) && isset($_GET['fname']) && isset($_GET['lname'])) {
+if(isset($_GET['pid']) && isset($_GET['ID'])&& isset($_GET['fname']) && isset($_GET['lname'])) {
 $pid = $_GET['pid'];
   $ID = $_GET['ID'];
   $fname = $_GET['fname'];
   $lname = $_GET['lname'];
-  $appdate = $_GET['appdate'];
-  $apptime = $_GET['apptime'];
 }
 
 
@@ -30,7 +28,7 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
   $ID = $_POST['ID'];
   $prescription = $_POST['prescription'];
   
-  $query=mysqli_query($con,"insert into prestb(doctor,pid,ID,fname,lname,appdate,apptime,disease,allergy,prescription) values ('$doctor','$pid','$ID','$fname','$lname','$appdate','$apptime','$disease','$allergy','$prescription', '$test')");
+  $query=mysqli_query($con,"insert into testtb(doctor,pid,ID,fname,lname,appdate,apptime,disease,allergy,prescription) values ('$doctor','$pid','$ID','$fname','$lname','$appdate','$apptime','$disease','$allergy','$prescription')");
     if($query)
     {
       echo "<script>alert('Prescribed successfully!');</script>";
@@ -98,7 +96,7 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
         
       </li>
        <li class="nav-item">
-       <a class="nav-link" href="doctor-panel.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Back</a>
+       <a class="nav-link" href="path-panel.php"><i class="fa fa-sign-out" aria-hidden="true"></i>Back</a>
       </li>
     </ul>
   </div>
@@ -116,21 +114,25 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
    </h3>
 
    <div class="tab-pane" id="list-pres" role="tabpanel" aria-labelledby="list-pres-list">
-        <form class="form-group" name="prescribeform" method="post" action="prescribe.php">
+        <form class="form-group" name="prescribeform" method="post" action="test.php">
         
           <div class="row">
-                  <div class="col-md-4"><label>Disease:</label></div>
+                  <div class="col-md-4"><label>Covid-19:</label></div>
                   <div class="col-md-8">
                   <!-- <input type="text" class="form-control" name="disease" required> -->
-                  <textarea id="disease" cols="86" rows ="5" name="disease" required></textarea>
+                  <input type="radio" id="positive" name="disease" value="Positive">
+                  <label for="positive">Positive</label><br>
+                  <input type="radio" id="negative" name="disease" value="Negative">
+                  <label for="negative">Negative</label><br>
+                  <!--textarea id="disease" cols="86" rows ="5" name="disease" required></textarea-->
                   </div><br><br><br>
                   
-                  <div class="col-md-4"><label>Allergies:</label></div>
+                  <div class="col-md-4"><label>Tests:</label></div>
                   <div class="col-md-8">
                   <!-- <input type="text"  class="form-control" name="allergy" required> -->
                   <textarea id="allergy" cols="86" rows ="5" name="allergy" required></textarea>
                   </div><br><br><br>
-                  <div class="col-md-4"><label>Prescription:</label></div>
+                  <div class="col-md-4"><label>Tests Results:</label></div>
                   <div class="col-md-8">
                   <!-- <input type="text" class="form-control"  name="prescription"  required> -->
                   <textarea id="prescription" cols="86" rows ="10" name="prescription" required></textarea>
@@ -142,7 +144,7 @@ if(isset($_POST['prescribe']) && isset($_POST['pid']) && isset($_POST['ID']) && 
                   <input type="hidden" name="pid" value="<?php echo $pid ?>" />
                   <input type="hidden" name="ID" value="<?php echo $ID ?>" />
                   <br><br><br><br>
-                  <input type="submit" name="prescribe" value="Prescribe" class="btn btn-primary" style="margin-left: 40pc;">
+                  <input type="submit" name="prescribe" value="Update Report" class="btn btn-primary" style="margin-left: 40pc;">
           
         </form>
         <br>

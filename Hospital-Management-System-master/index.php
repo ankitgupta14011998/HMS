@@ -84,7 +84,7 @@ function checklen()
                        
                     </div>
                     <div class="col-md-9 register-right" style="margin-top: 40px;left: 80px;">
-                        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist" style="width: 40%;">
+                        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist" style="width: 60%;">
                             <li class="nav-item">
                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Patient</a>
                             </li>
@@ -93,6 +93,9 @@ function checklen()
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="false">Receptionist</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#pathol" role="tab" aria-controls="pathol" aria-selected="false">Pathologist</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
@@ -167,18 +170,40 @@ function checklen()
                             </div>
 
 
+                                 <div class="tab-pane fade show" id="pathol" role="tabpanel" aria-labelledby="profile-tab">
+                                <h3  class="register-heading">Login as Pathologist</h3>
+                                <form method="post" action="func5.php">
+                                <div class="row register-form">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="User Name *" name="username5" onkeydown="return alphaOnly(event);" required/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" placeholder="Password *" name="password5" required/>
+                                        </div>
+                                        
+                                        <input type="submit" class="btnRegister" name="docsub1" value="Login"/>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+
+
                             <div class="tab-pane fade show" id="admin" role="tabpanel" aria-labelledby="profile-tab">
-                                <h3  class="register-heading">Login as Admin</h3>
+                                <h3  class="register-heading">Login as Receptionist</h3>
                                 <form method="post" action="func3.php">
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <input type="text" class="form-control" placeholder="User Name *" name="username1" onkeydown="return alphaOnly(event);" required/>
                                         </div>
-                                        
+                                        </div>
 
 
-                                    </div>
+
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <input type="password" class="form-control" placeholder="Password *" name="password2" required/>

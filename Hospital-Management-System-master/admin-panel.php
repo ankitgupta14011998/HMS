@@ -36,13 +36,14 @@ if(isset($_POST['app-submit']))
   $cur_time = date("H:i:s");
   $apptime1 = strtotime($apptime);
   $appdate1 = strtotime($appdate);
+  $apptmode=$_POST['apptmode'];
 	
   if(date("Y-m-d",$appdate1)>=$cur_date){
     if((date("Y-m-d",$appdate1)==$cur_date and date("H:i:s",$apptime1)>$cur_time) or date("Y-m-d",$appdate1)>$cur_date) {
       $check_query = mysqli_query($con,"select apptime from appointmenttb where doctor='$doctor' and appdate='$appdate' and apptime='$apptime'");
 
         if(mysqli_num_rows($check_query)==0){
-          $query=mysqli_query($con,"insert into appointmenttb(pid,fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus) values($pid,'$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1')");
+          $query=mysqli_query($con,"insert into appointmenttb(pid,fname,lname,gender,email,contact,doctor,docFees,appdate,apptime,userStatus,doctorStatus,apptmode) values($pid,'$fname','$lname','$gender','$email','$contact','$doctor','$docFees','$appdate','$apptime','1','1','$apptmode')");
 
           if($query)
           {
@@ -92,6 +93,7 @@ function generate_bill(){
     <label> Doctor Name : </label>'.$row["doctor"].'<br/><br/>
     <label> Appointment Date : </label>'.$row["appdate"].'<br/><br/>
     <label> Appointment Time : </label>'.$row["apptime"].'<br/><br/>
+       <label> Appointment Mode : </label>'.$row["apptmode"].'<br/><br/>
     <label> Disease : </label>'.$row["disease"].'<br/><br/>
     <label> Allergies : </label>'.$row["allergy"].'<br/><br/>
     <label> Prescription : </label>'.$row["prescription"].'<br/><br/>
@@ -438,6 +440,18 @@ function get_specs(){
 
                   </div><br><br>
 
+                  <div class="col-md-4"><label>Appointment Mode</label></div>
+                  <div class="col-md-8">
+                    <!-- <input type="time" class="form-control" name="apptime"> -->
+                    <select name="apptmode" class="form-control" id="apptmode" required="required">
+                      <option value="" disabled selected>Select Mode</option>
+                      <option value="Online">Online</option>
+                      <option value="offline">Offline</option>
+                
+                    </select>
+
+                  </div><br><br>
+
                   <div class="col-md-4">
                     <input type="submit" name="app-submit" value="Create new entry" class="btn btn-primary" id="inputbtn">
                   </div>
@@ -460,6 +474,7 @@ function get_specs(){
                     <th scope="col">Appointment Date</th>
                     <th scope="col">Appointment Time</th>
                     <th scope="col">Current Status</th>
+                    <th scope="col">Appointment Mode</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -469,7 +484,7 @@ function get_specs(){
                     $con=mysqli_connect("localhost","root","","myhmsdb");
                     global $con;
 
-                    $query = "select ID,doctor,docFees,appdate,apptime,userStatus,doctorStatus from appointmenttb where fname ='$fname' and lname='$lname';";
+                    $query = "select ID,doctor,docFees,appdate,apptime,userStatus,doctorStatus,apptmode from appointmenttb where fname ='$fname' and lname='$lname';";
                     $result = mysqli_query($con,$query);
                     while ($row = mysqli_fetch_array($result)){
               
@@ -483,7 +498,7 @@ function get_specs(){
                         <td><?php echo $row['docFees'];?></td>
                         <td><?php echo $row['appdate'];?></td>
                         <td><?php echo $row['apptime'];?></td>
-                        
+                        <td><?php echo $row['apptmode'];?></td>
                           <td>
                     <?php if(($row['userStatus']==1) && ($row['doctorStatus']==1))  
                     {
@@ -553,13 +568,14 @@ function get_specs(){
                     }
                     
 
-                    while ($row = mysqli_fetch_array($result)){
+                    while ($row = mysqli_fetch_array($result,MYSQLI_ASSOC)){
                   ?>
                       <tr>
                         <td><?php echo $row['doctor'];?></td>
                         <td><?php echo $row['ID'];?></td>
                         <td><?php echo $row['appdate'];?></td>
                         <td><?php echo $row['apptime'];?></td>
+                        
                         <td><?php echo $row['disease'];?></td>
                         <td><?php echo $row['allergy'];?></td>
                         <td><?php echo $row['prescription'];?></td>
